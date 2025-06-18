@@ -1,0 +1,64 @@
+-- transformation check in silver
+
+#################################################################################
+-- 1. check for nulls or duplicates in primary key
+SELECT 
+    prd_id, COUNT(*)
+FROM
+    silver_crm_prd_info
+GROUP BY prd_id
+HAVING COUNT(*) > 1 OR prd_id IS NULL;
+
+##################################################################################
+-- 2. check for unwanted spaces in string values
+SELECT prd_name
+FROM silver_crm_prd_info
+WHERE TRIM(prd_name) != prd_name;
+
+##################################################################################
+-- 3. check data standardization & consistency like removing abbreviation and 
+select Distinct gen
+from silver_erp_cust_az12;
+
+#####################################################################################
+-- 4. check for nulls and negative number in integrt column
+select prd_cost
+from silver_crm_prd_info
+where prd_cost < 0 or prd_cost is null;
+
+#####################################################################################
+-- 5. check for invalid dates
+select * from silver_crm_prd_info
+where prd_end_dt < prd_start_dt;
+
+######################################################################################
+-- 6. check for invalid dates
+select nullif(sls_order_dt, 0) as sls_order_dt
+from bronze_crm_sales_details
+where sls_order_dt <=0
+or length(sls_order_dt) != 8
+or sls_order_dt > 20500101
+or sls_order_dt < 19000101;
+
+#####################################################################################
+-- 7. check for invalid date order
+select * from bronze_crm_sales_details
+where sls_order_dt > sls_ship_dt or sls_order_dt > sls_due_dt;
+
+#####################################################################################
+-- 8. check data consistency between : sales, quantity and price
+-- sales = quantity * price
+-- values must not be negative, null or zero
+select sls_sales, sls_quantity, sls_price
+from silver_crm_sales_details
+where sls_sales != sls_quantity * sls_price
+or sls_sales is null or sls_quantity is null or sls_price is null
+or sls_sales <=0  or sls_quantity <=0  or sls_price <=0 
+order by sls_sales, sls_quantity, sls_price;
+
+#######################################################################################
+-- 9. identify OUT_OF_RANGE dates
+select distinct
+bdate
+from silver_erp_cust_az12
+where bdate < '1924-01-01' or bdate > now();
