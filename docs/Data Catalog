@@ -1,10 +1,11 @@
+markdown
 # Data Dictionary for gold layer
 ## Overview
 The Gold Layer is the business-level data representation, structured to support analytical and reporting use cases. It consists of dimension tables and fact tables for specific business metrics.
 
 ###1. gold_dim_customers
-  #### Purpose: Stores customer details enriched with demographic and geographic data.
-  #### Columns:
+  **Purpose:** Stores customer details enriched with demographic and geographic data.
+  **Columns:**
 | Column Name          | Data Type    | Description                                                                           |
 | -------------------- | ------------ | ------------------------------------------------------------------------------------- |
 | **customer\_key**    | INT          | Surrogate key uniquely identifying each customer record in the dimension table.       |
@@ -19,8 +20,8 @@ The Gold Layer is the business-level data representation, structured to support 
 | **create\_date**     | DATE         | The date and time when the customer record was created in the system.                 |
 
 ### 2. gold_dim_products
-  #### Purpose: Provides information about the products and their attributes.
-  #### Columns:
+  **Purpose:** Provides information about the products and their attributes.
+  **Columns:**
 | Column Name               | Data Type    | Description                                                                                          |
 | ------------------------- | ------------ | ---------------------------------------------------------------------------------------------------- |
 | **product\_key**          | INT          | Surrogate key uniquely identifying each product record in the product dimension table.               |
@@ -37,8 +38,8 @@ The Gold Layer is the business-level data representation, structured to support 
 
 
 ### 3. gold.fact_sales
-  #### Purpose: Stores transactional sales data for analytical purposes.
-  #### Columns:
+  **Purpose:** Stores transactional sales data for analytical purposes.
+  **Columns:**
 | Column Name        | Data Type    | Description                                                                                 |
 | ------------------ | ------------ | ------------------------------------------------------------------------------------------- |
 | **order\_number**  | NVARCHAR(50) | A unique alphanumeric identifier for each sales order (e.g., 'SO54496').                    |
